@@ -4,8 +4,8 @@ from sys import exit
 pygame.init()
 
 # Window Settings
-win_width = 800
-win_height = 600
+win_width = 1140 ## esses são as melhores valores pra imagem de fundo
+win_height = 620
 win = pygame.display.set_mode((win_width, win_height))
 pygame.display.set_caption('Space Wars')
 
@@ -41,7 +41,7 @@ def draw_game():
     pygame.time.delay(30)
     pygame.display.update()
 
-player = Spaceship(250, 500)
+player = Spaceship(win_width/2, 500)
 
 # Mainloop
 while True:
