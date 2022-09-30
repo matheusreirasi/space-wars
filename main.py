@@ -21,15 +21,15 @@ class Spaceship:
         self.y = y
         self.velx = 10
         self.vely = 10
-    def move_spaceship(self, userInput):
-        if userInput[pygame.K_RIGHT]:
-            self.x += self.velx
-        if userInput[pygame.K_LEFT]:
-            self.x -= self.velx
-        if userInput[pygame.K_UP]:
-            self.y -= self.vely
-        if userInput[pygame.K_DOWN]:
-            self.y += self.vely
+    def move_spaceship(self, userInput): ## limitei a movimentação da nave até o tamanho da tela do jogo
+            if userInput[pygame.K_RIGHT] and spaceshipImg.get_width() + self.x < pygame.display.get_window_size()[0]:
+                self.x += self.velx
+            if userInput[pygame.K_LEFT] and self.x > 0:
+                self.x -= self.velx
+            if userInput[pygame.K_UP] and self.y > 0:
+                self.y -= self.vely
+            if userInput[pygame.K_DOWN] and spaceshipImg.get_height() + self.y < pygame.display.get_window_size()[1]:
+                self.y += self.vely
     def draw(self, win):
         win.blit(spaceshipImg, (self.x, self.y))
         
