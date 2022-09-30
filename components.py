@@ -31,7 +31,7 @@ class Spaceship_2(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
 
-        self.image = pygame.transform.scale(pygame.image.load('assets/Graphics-Asset/PNG/Spaceships/01/Spaceship_01_BLUE.png'), (60, 70))
+        self.image = pygame.transform.scale(pygame.image.load('assets/Graphics-Asset/Spaceships/01/Spaceship_01_BLUE.png'), (60, 70))
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
