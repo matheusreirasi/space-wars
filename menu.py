@@ -57,10 +57,7 @@ def play():
         player_2.move_spaceship(userInput)
 
         #### Players collided ####
-        if (pygame.Rect.colliderect(player, player_2)):
-            pygame.quit
-            sys.exit()
-
+        
         draw_game()
 
 
