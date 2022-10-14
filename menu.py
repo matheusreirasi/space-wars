@@ -1,6 +1,6 @@
 import pygame, sys
 from button import Button
-from components import Spaceship_1, Spaceship_2
+from components import Spaceship_1
 
 pygame.init()
 
@@ -28,14 +28,12 @@ def play():
     # Load and Size Images
     background_image_game = pygame.transform.scale(pygame.image.load('assets/background.png'), (win_width, win_height))
     player = Spaceship_1(win_width/2, 500)
-    player_2 = Spaceship_2(234,337)
             
     # Draw Game
     def draw_game():
         win.fill((0, 0, 0))
         win.blit(background_image_game, (0, 0))
-        player.draw(win)
-        player_2.draw(win)
+        player.update(win)
         pygame.time.delay(30)
         pygame.display.update()
 
@@ -54,7 +52,6 @@ def play():
         userInput = pygame.key.get_pressed()
 
         player.move_spaceship(userInput)
-        player_2.move_spaceship(userInput)
 
         #### Players collided ####
         
