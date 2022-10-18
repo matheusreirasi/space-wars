@@ -16,7 +16,7 @@ class Menu (object):
             return pygame.font.Font("assets/font.ttf", size)
 
 
-        self.menu_text = get_font(100).render("Space Wars", True, "#8e6fb1")
+        self.menu_text = get_font(100).render("Calvo Wars", True, "#8e6fb1")
         self.menu_rectangle = self.menu_text.get_rect(center=(glb.GAME_WIDTH/2, 100))
 
         self.play_button = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(glb.GAME_WIDTH/2, 250), text_input="PLAY", font=get_font(75), base_color="#82e1aa", hovering_color="White")
@@ -55,5 +55,4 @@ class Menu (object):
                     pygame.quit()
                     sys.exit()
 
-        pygame.display.update()
         pass
