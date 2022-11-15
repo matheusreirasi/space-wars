@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.shot_value = False
         self.last_shot = pygame.time.get_ticks()
         #self.player_bullet_group = pygame.sprite.Group()
-        self.player_hitbox = (self.x, self.y, 60, 80)
+        self.player_hitbox = (self.x+15, self.y+20, 65, 75)
 
 
         #### Calvo sprites ####
@@ -72,12 +72,12 @@ class Player(pygame.sprite.Sprite):
     def shot_player(self, window_game):
         self.time_now = pygame.time.get_ticks()
 
-        if (self.userInput[pygame.K_SPACE] and self.time_now - self.last_shot > self.cooldown):
+        if (self.userInput[pygame.K_SPACE] and self.time_now - self.last_shot > glb.PLAYER_COOLDOWN):
             self.shot_value = True
             #self.bullet = Bullets(self.x, self.y, 1)
             #self.player_bullet_group.add(self.bullet)
             #self.bullet.update(window_game)
-            #self.last_shot = self.time_now
+            self.last_shot = self.time_now
 
         #for bullet in self.player_bullet_group:
             #bullet.move()
@@ -115,12 +115,11 @@ class Player(pygame.sprite.Sprite):
         for heart in self.life_array:
             heart.update(window_game)
 
-        self.cooldown = 500 #milliseconds
         self.move_player()
         self.shot_player(window_game)
         #self.player_bullet_group.update(window_game)
 
-        self.player_hitbox = (self.x+15, self.y+20, 60, 80)
+        self.player_hitbox = (self.x+15, self.y+20, 65, 75)
         pygame.draw.rect(window_game, glb.GAME_BACKGROUND_COLOR, self.player_hitbox, 1)
 
 
@@ -134,7 +133,7 @@ class Enemy(pygame.sprite.Sprite):
         self.last_shot = pygame.time.get_ticks()
         
         # Hitbox
-        self.enemy_hitbox = (self.x, self.y, 60, 80)
+        self.enemy_hitbox = (self.x+15, self.y+20, 85, 75)
 
         #### Sprite values ####
         self.step_index = 0
@@ -183,8 +182,8 @@ class Enemy(pygame.sprite.Sprite):
 
 
     def update(self, window_game):
-        self.enemy_hitbox = (self.x+15, self.y+20, 65, 75)
-        pygame.draw.rect(window_game, glb.GAME_BACKGROUND_COLOR, self.enemy_hitbox, 1)
+        self.enemy_hitbox = (self.x, self.y, 65, 75)
+        #pygame.draw.rect(window_game, glb.GAME_BACKGROUND_COLOR, self.enemy_hitbox, 1)
 
         if (self.shot_value == False):
             if self.step_index >= 8:
@@ -199,7 +198,6 @@ class Enemy(pygame.sprite.Sprite):
                 self.shot_index = 0
                 self.shot_value = False
 
-        self.cooldown = random.randrange(2000,9000)
         #self.enemy_bullet_group.update(window_game)
         
         
