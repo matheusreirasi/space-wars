@@ -35,11 +35,10 @@ class Play(object):
         #### create bullets ####
         self.player_bullet_group = pygame.sprite.Group()
         self.player_bullet = Bullets(self.player.x, self.player.y, 1)
-        self.player_bullet_group.add(self.player_bullet)
 
         self.enemy_bullet_group = pygame.sprite.Group()
         self.enemy_bullet = Bullets(self.enemy.x, self.enemy.y, -1)
-        self.enemy_bullet_group.add(self.player_bullet)
+        self.enemy_bullet_group.add(self.enemy_bullet)
 
         
     def increase_scroll(self):
@@ -54,7 +53,7 @@ class Play(object):
         self.time_now_player = pygame.time.get_ticks()
         self.userInput = pygame.key.get_pressed()
 
-        if (self.userInput[pygame.K_SPACE] and self.time_now_player - self.last_shot_player > self.cooldown):
+        if (self.userInput[pygame.K_SPACE] and self.time_now_player - self.last_shot_player > glb.PLAYER_COOLDOWN):
             self.player_bullet = Bullets(self.player.x, self.player.y, 1)
             self.player_bullet_group.add(self.player_bullet)
             self.player_bullet.update(self.window_game)
@@ -72,11 +71,12 @@ class Play(object):
     def shot_enemy(self):
         self.time_now_enemy = pygame.time.get_ticks()
 
-        if (self.time_now_enemy - self.last_shot_enemy > self.cooldown and len(self.enemy_bullet_group) < 2):
-            self.enemy_bullet = Bullets(self.enemy.x, self.enemy.y, -1)
-            self.enemy_bullet_group.add(self.enemy_bullet)
-            self.enemy_bullet.update(self.window_game)
-            self.last_shot_enemy = self.time_now_enemy
+        for enemy in self.enemies_group:
+            if (self.time_now_enemy - self.last_shot_enemy > self.enemy_cooldown and len(self.enemy_bullet_group) < 2):
+                self.enemy_bullet = Bullets(enemy.x, enemy.y, -1)
+                self.enemy_bullet_group.add(self.enemy_bullet)
+                self.enemy_bullet.update(self.window_game)
+                self.last_shot_enemy = self.time_now_enemy
 
         for bullet in self.enemy_bullet_group:
             bullet.move()
@@ -86,6 +86,27 @@ class Play(object):
 
             bullet.update(self.window_game)
 
+    def shot_enemy2 (self):
+        self.time_now_enemy = pygame.time.get_ticks()
+
+        for enemy in self.enemies_group:
+            self.bullet = Bullets(enemy.x , enemy.y, -1)
+            self.enemy_bullet_group.add(self.bullet)
+            self.last_shot_enemy = self.time_now_enemy
+
+            if (self.time_now_enemy - self.last_shot_enemy > self.enemy_cooldown and len(self.enemy_bullet_group) < 2):
+
+                for bullet in self.enemy_bullet_group:
+                
+                    bullet.move()
+                    if bullet.off_screen():
+                        bullet.kill()
+                        print("enemy bullet off screen")
+                    
+            self.enemy_bullet_group.update(self.window_game)
+                        
+
+
 
     def player_hit_enemy (self):
         for enemy in self.enemies_group:
@@ -94,22 +115,22 @@ class Play(object):
                 self.player_bullet.kill()
                 enemy.kill()
                 self.enemies_group.remove(enemy)
-                print("player hit enemy")
 
 
     def create_new_enemy(self):
         for enemy in self.enemies_group:
             if (len(self.enemies_group) <= 3 and len(self.enemies_group) > 0):
-                enemy = self.enemy()
-                self.enemies_group.add(enemy)
-                if (enemy.off_screen()):
-                    enemy.kill()
-                    self.enemies_group.remove(enemy)
-                    print("enemy off screen")
-                else:
-                    enemy.move_enemy()
+                self.enemy = Enemy(random.randrange(glb.GAME_WIDTH, glb.GAME_WIDTH+300), random.randrange(10, glb.GAME_HEIGHT-100))
+                self.enemies_group.add(self.enemy)
+            if (enemy.off_screen()):
+                enemy.kill()
+                self.enemies_group.remove(enemy)
+                print("enemy off screen")
+            else:
+                enemy.move_enemy()
+                
+
         
-        self.enemy.update(self.window_game)
 
     # Draw Game
     def update(self):
@@ -117,37 +138,19 @@ class Play(object):
 
         self.window_game.fill(glb.GAME_BACKGROUND_COLOR)
 
-        self.cooldown = 500 #milliseconds
+        self.enemy_cooldown = random.randrange(2000,9000)
 
-        self.player_hitbox = (self.player.x+15, self.player.y+20, 60, 80)
+        #self.player_hitbox = (self.player.x+15, self.player.y+20, 60, 80)
         #pygame.draw.rect(self.window_game, glb.GAME_BACKGROUND_COLOR, self.player_hitbox, 1)
 
-        self.enemy_hitbox = (self.enemy.x+15, self.enemy.y+20, 65, 75)#width,height
+        #self.enemy_hitbox = (self.enemy.x+15, self.enemy.y+20, 65, 75)#width,height
         #pygame.draw.rect(self.window_game, glb.GAME_BACKGROUND_COLOR, self.enemy_hitbox, 1)
 
         for i in range(0,2):
             self.window_game.blit(self.background_image_game, (i*self.background_image_game.get_width() + self.scroll, 0))
 
-        #if (len(self.enemies_group) <= 3 and len(self.enemies_group) > 0):
-            #self.enemies_group.add(self.enemy)
         
-        for enemy in self.enemies_group:
-            if (len(self.enemies_group) <= 3 and len(self.enemies_group) > 0):
-                enemy = Enemy(random.randrange(glb.GAME_WIDTH, glb.GAME_WIDTH+100), random.randrange(10, glb.GAME_HEIGHT-100))
-                self.enemies_group.add(enemy)
-            if  enemy.off_screen():
-                self.enemies_group.remove(enemy)
-                enemy.kill()
-                self.enemy.kill()
-                print("enemy off screen")
-            else:
-                enemy.move_enemy()
-
-
-        self.player_hit_enemy()
-
-        self.shot_player()
-        self.shot_enemy()
+        self.create_new_enemy()
 
         self.enemies_group.update(self.window_game)
         #self.player_group.update(self.window_game)
@@ -155,6 +158,12 @@ class Play(object):
         self.player.update(self.window_game)
         self.enemy.update(self.window_game)
 
+        self.player_hit_enemy()
+
+        self.shot_player()
+        self.shot_enemy2()
+
+    
         #self.player_bullet.update(self.window_game)
         #self.enemy_bullet.update(self.window_game)
 
