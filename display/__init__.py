@@ -1,5 +1,6 @@
 __all__ = [
     "menu",
     "play",
-    "options"
+    "options",
+    "gameover"
 ]
