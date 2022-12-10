@@ -1,3 +1,5 @@
+import random
+
 GAME_WIDTH = 1140
 GAME_HEIGHT = 620
 GAME_TITLE = "Calvo Wars"
@@ -7,11 +9,16 @@ SPACESHIP_SPEED = 10
 BULLET_SPEED = 10
 FONT_SIZE = 100
 FPS = 60
+PLAYER_COOLDOWN = 1500
+ENEMY_COOLDOWN = random.randrange(2000,9000)
+BOSS_COOLDOWN = random.randrange(4000,12000)
+HEART_COOLDOWN =  random.randrange(20000,100000)
 
 # 1: Menu
 # 2: Play
 # 3: Options
 # 4: Exit
+# 5: GameOver
 GAME_SCREEN = 1
 
 # 0: FÁCIL
