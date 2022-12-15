@@ -16,7 +16,7 @@ gameover_page = gameover.GameOver()
 user_input = pygame.key.get_pressed()
 current_game = 0##por padrão nada será mostrado na tela
 
-while (glb.GAME_SCREEN > 0 and glb.GAME_SCREEN < 5):##será quase sempre verdadeiro
+while (glb.GAME_SCREEN > 0 and glb.GAME_SCREEN <= 5):##será quase sempre verdadeiro
     window_game.fill(glb.GAME_BACKGROUND_COLOR)
 
 
@@ -36,6 +36,5 @@ while (glb.GAME_SCREEN > 0 and glb.GAME_SCREEN < 5):##será quase sempre verdade
     if (user_input[pygame.K_ESCAPE]):
         glb.GAME_SCREEN = 1
 
-    #print(glb.GAME_SCREEN)
 
     pygame.display.update()
