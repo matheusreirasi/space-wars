@@ -1,5 +1,6 @@
 import pygame, random
 
+
 import globals as glb
 
 class Player(pygame.sprite.Sprite):
@@ -15,6 +16,9 @@ class Player(pygame.sprite.Sprite):
         self.life_array = []
         self.life_x = 50
 
+        if (self.player_life <= 0):
+            glb.GAME_SCREEN = 5
+
         self.score = 0
 
 
@@ -23,38 +27,37 @@ class Player(pygame.sprite.Sprite):
         self.shot_index = 0
         self.shot_value = False
         self.last_shot = pygame.time.get_ticks()
-        #self.player_bullet_group = pygame.sprite.Group()
-        self.player_hitbox = (self.x+30, self.y+80, 85, 75)
+        self.player_hitbox = (self.x+15, self.y+25, 65, 70)
 
 
         #### Calvo sprites ####
-        self.scale_x = 100
-        self.scale_y = 100
+        self.scale_x = 135
+        self.scale_y = 135
 
         self.walk_player_sprite = [
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/parado1.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/anda1.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/anda2.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/anda3.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/anda4.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/anda5.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/anda6.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/anda7.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/parado1.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/anda1.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/anda2.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/anda3.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/anda4.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/anda5.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/anda6.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/anda7.png"), (self.scale_x, self.scale_y)),
         ]
 
 
         #### Calvo shots ####
         self.shot_player_sprite = [
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/atira1.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/atira2.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/atira3.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/atira4.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/atira5.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/atira6.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/atira7.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/atira8.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/atira9.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/atira10.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/atira1.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/atira2.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/atira3.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/atira4.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/atira5.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/atira6.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/atira7.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/atira8.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/atira9.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/atira10.png"), (self.scale_x, self.scale_y)),
         ]
 
 
@@ -113,8 +116,7 @@ class Player(pygame.sprite.Sprite):
         self.move_player()
         self.shot_player(window_game)
 
-        self.player_hitbox = (self.x+15, self.y+20, 65, 75) ##hitbox dentro do update serve somente para desenhar e ñ quer dizer que realmente está acertando o player
-        pygame.draw.rect(window_game, glb.GAME_BACKGROUND_COLOR, self.player_hitbox, 1)
+        self.player_hitbox = (self.x+15, self.y+25, 65, 70) ##hitbox dentro do update serve somente para desenhar e ñ quer dizer que realmente está acertando o player
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -137,29 +139,29 @@ class Enemy(pygame.sprite.Sprite):
         self.shot_value = False
         self.last_shot_enemy = pygame.time.get_ticks()
 
-        self.scale_x = 100
-        self.scale_y = 100
+        self.scale_x = 135
+        self.scale_y = 135
 
         #### Enemy sprites ####
         self.sprites = [
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/anda8.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/anda7.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/anda6.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/anda5.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/anda4.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/anda3.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/anda2.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/anda1.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/anda8.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/anda7.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/anda6.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/anda5.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/anda4.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/anda3.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/anda2.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/anda1.png"), (self.scale_x, self.scale_y)),
         ]
         self.rect = self.sprites[self.step_index].get_rect()
         
         self.shot_enemy_sprite = [
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/atira1.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/atira2.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/atira3.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/atira4.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/atira5.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoEnemy/atira6.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/atira1.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/atira2.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/atira3.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/atira4.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/atira5.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoenemy/atira6.png"), (self.scale_x, self.scale_y)),
         ]
         self.rect = self.shot_enemy_sprite[self.shot_index].get_rect()
 
@@ -226,7 +228,7 @@ class Boss(pygame.sprite.Sprite):
         self.boss_life = 3
 
         # Hitbox
-        self.boss_hitbox = (self.x, self.y, 64, 150)
+        self.boss_hitbox = (self.x+40, self.y+15, 100, 120)
 
         # Speed
         self.speed_x = random.randrange(2,4)
@@ -237,41 +239,41 @@ class Boss(pygame.sprite.Sprite):
         self.shot_index = 0
         self.shot_value = False
 
-        self.scale_x = 145
-        self.scale_y = 145
+        self.scale_x = 165
+        self.scale_y = 165
 
 
         self.sprites = [
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/anda8.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/anda7.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/anda6.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/anda5.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/anda4.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/anda3.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/anda2.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/anda1.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/anda8.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/anda7.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/anda6.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/anda5.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/anda4.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/anda3.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/anda2.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/anda1.png"), (self.scale_x, self.scale_y)),
         ]
         self.rect = self.sprites[self.step_index].get_rect()
 
 
         self.shot_boss_sprite = [
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/atira1.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/atira2.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/atira3.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/atira4.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/atira5.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/atira6.png"), (self.scale_x, self.scale_y))
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/atira1.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/atira2.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/atira3.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/atira4.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/atira5.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/atira6.png"), (self.scale_x, self.scale_y))
         ]
         self.rect = self.shot_boss_sprite[self.shot_index].get_rect()
 
 
         self.hit_boss_sprite = [
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/hit1.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/hit2.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/hit3.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/hit4.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/hit5.png"), (self.scale_x, self.scale_y)),
-            pygame.transform.scale(pygame.image.load("Sprites/CalvoBoss/hit6.png"), (self.scale_x, self.scale_y))
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/hit1.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/hit2.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/hit3.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/hit4.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/hit5.png"), (self.scale_x, self.scale_y)),
+            pygame.transform.scale(pygame.image.load("assets/sprites/calvoboss/hit6.png"), (self.scale_x, self.scale_y))
         ]
 
 
@@ -305,8 +307,7 @@ class Boss(pygame.sprite.Sprite):
 
 
     def update(self, window_game):
-        self.boss_hitbox = (self.x+40, self.y+30, 100, 120) #tamanho ideal
-        pygame.draw.rect(window_game, glb.GAME_BACKGROUND_COLOR, self.boss_hitbox, 1)
+        self.boss_hitbox = (self.x+40, self.y+15, 100, 120)
 
 
         self.shot_boss(window_game)
@@ -315,16 +316,16 @@ class Bullets(pygame.sprite.Sprite):
     def __init__(self,x,y, direction):
         pygame.sprite.Sprite.__init__(self)
 
-        self.player_bullet_image = pygame.transform.scale(pygame.image.load("./Sprites/Bullet/bullet-direita.png"),(20,45))
+        self.player_bullet_image = pygame.transform.scale(pygame.image.load("./assets/sprites/bullet/bullet-direita.png"),(30,55))
         self.rect = self.player_bullet_image.get_rect()
         #self.rect.center = [x, y]
 
-        self.enemy_bullet_image = pygame.transform.scale(pygame.image.load("./Sprites/Bullet/enemy-bullet-direita.png"),(60,40))
+        self.enemy_bullet_image = pygame.transform.scale(pygame.image.load("./assets/sprites/bullet/enemy-bullet-direita.png"),(70,50))
         self.rect = self.enemy_bullet_image.get_rect()
         #self.rect.center = [x, y]
 
 
-        self.boss_bullet_image = pygame.transform.scale(pygame.image.load("./Sprites/Bullet/boss-bullet-direita.png"),(60,40))
+        self.boss_bullet_image = pygame.transform.scale(pygame.image.load("./assets/sprites/bullet/boss-bullet-direita.png"),(70,50))
         self.boss_bullet_rect = self.boss_bullet_image.get_rect()
         #self.boss_bullet_rect.center = [x, y]
 
@@ -341,6 +342,8 @@ class Bullets(pygame.sprite.Sprite):
 
 
     def update(self, window_game):
+        self.hitbox = (self.x+10, self.y+10, 40, 20) ##hitbox dentro do update serve somente para desenhar e ñ quer dizer que realmente está acertando o player
+
         if self.direction == 1:
             window_game.blit(self.player_bullet_image, (self.x, self.y))
         elif self.direction == -1:
@@ -354,7 +357,7 @@ class Life(pygame.sprite.Sprite):
 
         self.x = x
         self.y = 45
-        self.life_img = pygame.transform.scale(pygame.image.load("Sprites/CalvoHero/vida.png"), (40, 40))
+        self.life_img = pygame.transform.scale(pygame.image.load("assets/sprites/calvohero/vida.png"), (40, 40))
 
 
     def update(self,window_game):
@@ -370,8 +373,8 @@ class BonusHeart(pygame.sprite.Sprite):
         self.y = y
         self.heart_speed = 7
 
-        self.hitbox = (self.x , self.y , 64, 64)
-        self.heart_img = pygame.transform.scale(pygame.image.load("Sprites/Bonus/heart.png"), (90, 70))
+        self.heart_hitbox = (self.x+15 , self.y , 30, 30)
+        self.heart_img = pygame.transform.scale(pygame.image.load("assets/sprites/bonus/heart.png"), (90, 70))
 
 
     def move_heart(self):
@@ -382,5 +385,4 @@ class BonusHeart(pygame.sprite.Sprite):
 
     def update(self, window_game):
         window_game.blit(self.heart_img, (self.x , self.y))
-        self.heart_hitbox = (self.x+15, self.y+15, 65, 45)
-        pygame.draw.rect(window_game, glb.GAME_BACKGROUND_COLOR, self.heart_hitbox, 1)
+        self.heart_hitbox = (self.x, self.y-5 , 65, 30)
