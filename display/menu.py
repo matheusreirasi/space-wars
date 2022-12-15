@@ -7,10 +7,13 @@ import globals as glb
 class Menu (object):
     def __init__(self):
         self.window_game = pygame.display.set_mode((glb.GAME_WIDTH, glb.GAME_HEIGHT))
-        self.background_image_menu = pygame.transform.scale(pygame.image.load("assets/background-image-menu.png"),(glb.GAME_WIDTH, glb.GAME_HEIGHT))
+        self.background_image_menu = pygame.transform.scale(pygame.image.load("assets/images/gameover.jpg"),(glb.GAME_WIDTH, glb.GAME_HEIGHT))
 
         self.window_game.blit(self.background_image_menu,(0,0))
         pygame.display.set_caption("Menu")
+
+        #pygame.mixer.music.load("./assets/sounds/menu-game-music.ogg")
+        #pygame.mixer.music.play(-1)
 
         def get_font(size):
             return pygame.font.Font("assets/font.ttf", size)
@@ -19,11 +22,11 @@ class Menu (object):
         self.menu_text = get_font(100).render("Calvo Wars", True, "#8e6fb1")
         self.menu_rectangle = self.menu_text.get_rect(center=(glb.GAME_WIDTH/2, 100))
 
-        self.play_button = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(glb.GAME_WIDTH/2, 250), text_input="PLAY", font=get_font(75), base_color="#82e1aa", hovering_color="White")
+        self.play_button = Button(image=pygame.image.load("assets/play-rect.png"), pos=(glb.GAME_WIDTH/2, 250), text_input="PLAY", font=get_font(75), base_color="#82e1aa", hovering_color="White")
 
-        self.options_button = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(glb.GAME_WIDTH/2, 400), text_input="OPTIONS", font=get_font(75), base_color="#82e1aa", hovering_color="White")
+        self.options_button = Button(image=pygame.image.load("assets/options-rect.png"), pos=(glb.GAME_WIDTH/2, 400), text_input="OPTIONS", font=get_font(75), base_color="#82e1aa", hovering_color="White")
         
-        self.exit_button = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(glb.GAME_WIDTH/2, 550), text_input="EXIT", font=get_font(75), base_color="#82e1aa", hovering_color="White")
+        self.exit_button = Button(image=pygame.image.load("assets/quit-rect.png"), pos=(glb.GAME_WIDTH/2, 550), text_input="EXIT", font=get_font(75), base_color="#82e1aa", hovering_color="White")
 
 
 
