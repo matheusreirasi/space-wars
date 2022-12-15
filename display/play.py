@@ -15,7 +15,7 @@ class Play(object):
         self.window_game = pygame.display.set_mode((glb.GAME_WIDTH, glb.GAME_HEIGHT))
         pygame.display.set_caption(glb.GAME_TITLE)
         
-        self.background_image_game = pygame.transform.scale(pygame.image.load('./Sprites/Background/background.png'), (glb.GAME_WIDTH, glb.GAME_HEIGHT))
+        self.background_image_game = pygame.transform.scale(pygame.image.load('./assets/images/background.png'), (glb.GAME_WIDTH, glb.GAME_HEIGHT))
         
         self.scroll_page = 0
 
@@ -25,19 +25,19 @@ class Play(object):
 
         #### create player ####
         self.player_group = pygame.sprite.GroupSingle()
-        self.player = Player(glb.GAME_WIDTH/2, 500)
+        self.player = Player(glb.GAME_WIDTH/2, 400)
         self.player_group.add(self.player)
 
 
         #### create enemy ####
         self.enemies_group = pygame.sprite.Group()
-        self.enemy = Enemy(random.randrange(glb.GAME_WIDTH, glb.GAME_WIDTH+100), random.randrange(10, glb.GAME_HEIGHT-100))
+        self.enemy = Enemy(random.randrange(glb.GAME_WIDTH, glb.GAME_WIDTH+100), random.randrange(10, glb.GAME_HEIGHT-200))
         self.enemies_group.add(self.enemy)
 
 
         #### create Boss ####
         self.boss_group = pygame.sprite.Group()
-        self.boss = Boss(random.randrange(glb.GAME_WIDTH, glb.GAME_WIDTH+100), random.randrange(10, glb.GAME_HEIGHT-160))
+        self.boss = Boss(random.randrange(glb.GAME_WIDTH, glb.GAME_WIDTH+100), random.randrange(10, glb.GAME_HEIGHT-250))
         self.boss_group.add(self.boss)
 
 
@@ -89,7 +89,6 @@ class Play(object):
 
     def shot_enemy(self):
         self.time_now_enemy = pygame.time.get_ticks()
-        #self.enemy_hit_player()
 
         for enemy in self.enemies_group:
             if (self.time_now_enemy - self.last_shot_enemy > glb.ENEMY_COOLDOWN ):
@@ -106,29 +105,8 @@ class Play(object):
             bullet.update(self.window_game)
 
 
-    def shot_enemy2 (self):
-        self.time_now_enemy = pygame.time.get_ticks()
-
-        for enemy in self.enemies_group:
-            self.enemy_bullet = Bullets(enemy.x , enemy.y, -1)
-            self.enemy_bullet_group.add(self.enemy_bullet)
-            self.enemy_bullet.update(self.window_game)
-            self.last_shot_enemy = self.time_now_enemy
-
-            if (self.time_now_enemy - self.last_shot_enemy > self.enemy_cooldown and len(self.enemy_bullet_group) < 2):
-
-                for bullet in self.enemy_bullet_group:
-                
-                    bullet.move()
-                    if bullet.off_screen():
-                        bullet.kill()
-                    
-                    bullet.update(self.window_game)
-
-
     def shot_boss(self):
         self.time_now_boss = pygame.time.get_ticks()
-        #self.boss_hit_player()
 
         for boss in self.boss_group:
             if (self.time_now_boss - self.last_shot_boss > glb.BOSS_COOLDOWN and len(self.boss_bullet_group) < 2):
@@ -163,24 +141,26 @@ class Play(object):
                 if boss.boss_hitbox[0] < bullet.x < boss.boss_hitbox[0] + boss.boss_hitbox[2] and boss.boss_hitbox[1] < bullet.y < boss.boss_hitbox[1] + boss.boss_hitbox[3]:
                     self.player.score += 55
                     self.boss.boss_life -= 1
-                    self.boss.hit_boss_sprite
-                    self.player_bullet.kill()
+                    bullet.kill()
 
                     if (self.boss.boss_life == 0):
                         self.boss.kill()
-                        print("boss dead")
 
 
     def player_hit_heart(self):
         for heart in self.heart_group:
             for bullet in self.player_bullet_group:
-                if heart.hitbox[0] < bullet.x < heart.hitbox[0] + heart.hitbox[2] and heart.hitbox[1] < bullet.y < heart.hitbox[1] + heart.hitbox[3]:
+                if heart.heart_hitbox[0] < bullet.x < heart.heart_hitbox[0] + heart.heart_hitbox[2] and heart.heart_hitbox[1] < bullet.y < heart.heart_hitbox[1] + heart.heart_hitbox[3]:
                     self.player.score += 5
                     self.player.player_life += 1
                     self.player.life_x += 50
-                    self.player.life_array.add(self.bonus_heart)
+                    self.player.life_array.append(heart)
                     bullet.kill()
-                    heart.kill()
+                    self.heart_group.remove(heart)
+                    self.bonus_heart.kill()
+                    heart.update(self.window_game)
+                
+                
 
 
     def enemy_hit_player(self):
@@ -192,6 +172,7 @@ class Play(object):
                 self.player.life_array.pop()
 
                 if (self.player.player_life <= 0):
+                    gameover.GameOver()
                     glb.GAME_SCREEN = 5
 
     def boss_hit_player(self):
@@ -204,9 +185,9 @@ class Play(object):
                 self.player.life_array.pop()
                 self.player.life_array.pop()
 
-                print("boss hit player")
 
                 if (self.player.player_life == 0):
+                    gameover.GameOver()
                     glb.GAME_SCREEN = 5
 
     def create_new_enemy(self):
@@ -235,10 +216,8 @@ class Play(object):
                 self.player.life_array.pop()
                 boss.kill()
                 self.boss_group.remove(boss)
-                print("boss off screen")
             else:
                 boss.move_boss()
-            print(len(self.boss_group))
 
 
     def create_new_heart(self):
@@ -250,13 +229,13 @@ class Play(object):
                 self.heart_group.remove(heart)
             else:
                 heart.move_heart()
-
+            
 
         
     # Draw Game
     def update(self):
         self.window_game.fill(glb.GAME_BACKGROUND_COLOR)
-
+        print(self.player.player_life)
 
         for i in range(0,2):
             self.window_game.blit(self.background_image_game, (i*self.background_image_game.get_width() + self.scroll_page, 0))
@@ -286,10 +265,6 @@ class Play(object):
         self.shot_boss()
 
     
-        #self.player_bullet.update(self.window_game)
-        #self.enemy_bullet.update(self.window_game)
-
-
         pygame.time.delay(30)
 
         self.clock.tick(60)
